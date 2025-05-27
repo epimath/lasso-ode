@@ -22,6 +22,7 @@ SIRode <- function(t, x, params){
   
   b = params[1]
   g = params[2]
+
   
   dS = -b*S*I
   dI = b*S*I - g*I
@@ -1340,7 +1341,7 @@ while (c < 500) {
 
 
 
-############## plots
+############## Parameters Plots
 data1 <- data.frame(
   beta1 = PARAMETERS_SInRsir[,2],
   beta2 = PARAMETERS_SInRsir[,4],
@@ -1392,10 +1393,6 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
   theme_minimal()
 
 
-
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_2_SInRsir.RData")
-#load("PARAMETERS_SInRsir.RData")
 
 
 ### plot model fitting 

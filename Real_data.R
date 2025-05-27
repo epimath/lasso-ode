@@ -90,7 +90,7 @@ Blocking_CV_1 <- function(Data_train,Data_test,lamda,initial_value,initial_par){
   out <- ode(y = abs(init), times = abs(times), func = model3_asymp_restrict, parms = parameters)
   out <- as.data.frame(out)
   
-  MSE <- sum(abs(Data_test - out[,3]/parameters['kinv']))/length(Data_test)
+  MSE <- sum(abs(Data_test - out[,3]/parameters['kinv'])^2)/length(Data_test)
   
   
   return(list(MSE = MSE, parameters = parameters))
@@ -102,7 +102,6 @@ n <- length(DATA)
 
 
 ############################### Ramdonly split to test and training (Algorithm 1)
-## lamda == 0
 lamda = 0
 c <- 1
 mea_vector_real2 <- c()
@@ -130,7 +129,7 @@ while (c < 300) {
 }
 
 
-## lamda == (1e+06)*1
+
 lamda = (1e+05)*5
 c <- 1
 mea_vector_1_real2 <- c()
@@ -159,7 +158,7 @@ while (c < 300) {
 
 
 
-## lamda == (1e+06)*5
+
 lamda = (1e+05)*10
 c <- 1
 mea_vector_2_real2 <- c()
@@ -188,7 +187,6 @@ while (c < 300) {
 
 
 
-## lamda == (1e+06)*10
 lamda = (1e+05)*15
 c <- 1
 mea_vector_3_real2 <- c()
@@ -216,7 +214,7 @@ while (c < 300) {
 }
 
 
-## lamda == (1e+06)*15
+
 lamda = (1e+05)*20
 c <- 1
 mea_vector_4_real2 <- c()
@@ -294,13 +292,12 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
   labs(title = "MSE in testing dataset",
        x = "Lamda",
        y = "MSE") +
+  ylim(0, 5e+07)+
   theme_minimal()
 
 
 
 
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_1_real2.RData")
 
 ####### plot model fitting
 Data_Generate <- function(par, initial, times){
@@ -318,9 +315,9 @@ init = c(1 - 5*DATA[1]*1.1212e-05, DATA[1]*1.1212e-05 , 4*DATA[1]*1.1212e-05 , 0
 
 DATA_PREDICTION_LASSO <- c()
 
-for (i in 1:dim(PARAMETERS_1_real2)[1]){
+for (i in 1:dim(PARAMETERS_2_real2)[1]){
   
-  parameters <- PARAMETERS_1_real2[i,]
+  parameters <- PARAMETERS_2_real2[i,]
 
   DATA_simulated <- Data_Generate(parameters, init, times)
   DATA_simulated <- DATA_simulated[,3]/parameters['kinv']
@@ -330,9 +327,9 @@ for (i in 1:dim(PARAMETERS_1_real2)[1]){
 
 
 DATA_PREDICTION_LASSO <- as.matrix(DATA_PREDICTION_LASSO)
-quantiles_low <- apply(DATA_PREDICTION_LASSO, 2, quantile, probs = 0.25)
+quantiles_low <- apply(DATA_PREDICTION_LASSO, 2, quantile, probs = 0.2)
 quantiles_median <- apply(DATA_PREDICTION_LASSO, 2, quantile, probs = 0.5)
-quantiles_high <- apply(DATA_PREDICTION_LASSO, 2, quantile, probs = 0.75)
+quantiles_high <- apply(DATA_PREDICTION_LASSO, 2, quantile, probs = 0.7)
 
 
 data <- data.frame(
@@ -346,11 +343,11 @@ data <- data.frame(
 
 
 p <- ggplot(data, aes(x = x)) +
-  geom_ribbon(aes(ymin = y2_lower, ymax = y2_upper, fill = "25%-75% quantile"), alpha = 0.5) +
+  geom_ribbon(aes(ymin = y2_lower, ymax = y2_upper, fill = "20%-70% quantile"), alpha = 0.5) +
   geom_line(aes(y = y2, color = "Prediction"), size = 0.5) +
   geom_point(aes(y = y1, color = "Data"), size = 0.5) +
   scale_color_manual(values = c("Data" = "blue", "Prediction" = "dark green")) +
-  scale_fill_manual(values = c("25%-75% quantile" = "green")) +
+  scale_fill_manual(values = c("20%-70% quantile" = "green")) +
   labs(color = " ", fill = " ") +
   labs(x = "Time (days)", y = "Infections", title = "Time series plot from real world data scenario") +
   theme_minimal()
@@ -367,6 +364,21 @@ p + theme(
 
 
 
+##### Parameters Plot
+df1 <- as.data.frame(PARAMETERS_2_real2)
+df1 <- df1[, c("beta_IS", "beta_IA","betaW","alpha_S","alpha_A")]
+df_long <- melt(df1, variable.name = "Variable", value.name = "Value")
+df_long$ColorGroup <- ifelse(df_long$Variable %in% c("beta_IS", "beta_IA","betaW","alpha_S","alpha_A"), "Asymptomatic model","SIR model")
+# Plot using ggplot2
+ggplot(df_long, aes(x = Variable, y = Value, fill = ColorGroup)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("Asymptomatic model" = "blue")) +
+  ylim(-0.1, 3.5)+
+  labs(title = "Parameters estimation",
+       x = "Parameters",
+       y = "Values",
+       fill = "Group") +  # Legend title
+  theme_minimal()
 
 
 

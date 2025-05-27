@@ -163,7 +163,7 @@ n <- length(DATA)
 
 
 
-#################### Ramdonly split to test and training (Algorithm 1)
+#################### Randomly split to test and training (Algorithm 1)
 lamda = 0
 c <- 1
 mea_vector_SInRsinr <- c()
@@ -862,7 +862,7 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
 
 
 
-############## plots
+############## parameters plots
 data1 <- data.frame(
   beta1 = PARAMETERS_SInRsinr[,2],
   beta2 = PARAMETERS_SInRsinr[,4],
@@ -891,10 +891,6 @@ ggplot(combined_data, aes(x = beta1, y = beta2, color = group)) +
 
 
 
-
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_1_SInRsinr.RData")
-#load("PARAMETERS_SInRsinr.RData")
 
 ### plot model fitting 
 Data_Generate <- function(par, initial, times){

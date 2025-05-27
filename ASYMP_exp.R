@@ -140,7 +140,7 @@ Blocking_CV_1 <- function(Data_train,Data_test,lamda,initial_value,initial_par){
   out <- ode(y = abs(init), times = abs(times), func = model3_asymp_restrict, parms = parameters)
   out <- as.data.frame(out)
   
-  MSE <- sum(abs(Data_test - out[,3]/parameters['kinv']))/length(Data_test)
+  MSE <- sum(abs(Data_test - out[,3]/parameters['kinv'])^2)/length(Data_test)
   
   
   return(list(MSE = MSE, parameters = parameters))
@@ -151,7 +151,7 @@ initial_value = c(0.9986892, 0.0013108 , 0 , 0 , 0, 0 )
 n <- length(DATA)
 
 
-############################### Ramdonly split to test and training (Algorithm 1)
+############################### Randomly split to test and training (Algorithm 1)
 lamda = 0
 c <- 1
 mea_vector_ASYMPexp_367 <- c()
@@ -1012,7 +1012,7 @@ while (c < 300) {
 
 
 
-######################  plots
+######################  parameters plots
 data1 <- data.frame(
   beta1 = PARAMETERS_ASYMPexp_367[,1],
   beta2 = PARAMETERS_ASYMPexp_367[,2],
@@ -1065,10 +1065,6 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
 
 
 
-
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_3_ASYMPexp_367.RData")
-#load("PARAMETERS_ASYMPexp_367.RData")
 
 ### plot model fitting 
 Data_Generate <- function(par, initial, times){

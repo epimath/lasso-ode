@@ -128,7 +128,7 @@ initial_value <- c(1- 1e-2, 1e-2/2 , 1e-2/2, 0 )
 n <- length(DATA)
 
 
-#################### Ramdonly split to test and training (Algorithm 1)
+#################### Randomly split to test and training (Algorithm 1)
 lamda = 0
 c <- 1
 mea_vector_SIWRsiwr<- c()
@@ -781,7 +781,7 @@ while (c < 500) {
 
 
 
-######################  plots
+######################  Parameters plots (from Algorithm 1)
 data1 <- data.frame(
   beta1 = PARAMETERS_SIWRsiwr[,1],
   beta2 = PARAMETERS_SIWRsiwr[,2],
@@ -810,7 +810,7 @@ ggplot(combined_data, aes(x = beta1, y = beta2, color = group)) +
 
 
 
-######### MSE plot
+######### MSE plot (from Algorithm 1)
 vector1 <- mea_vector_SIWRsiwr
 vector2 <- mea_vector_1_SIWRsiwr
 vector3 <- mea_vector_2_SIWRsiwr
@@ -835,11 +835,6 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
 
 
 
-
-
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_3_SIWRsiwr.RData")
-#load("PARAMETERS_SIWRsiwr.RData")
 
 ### plot model fitting 
 Data_Generate <- function(par, initial, times){

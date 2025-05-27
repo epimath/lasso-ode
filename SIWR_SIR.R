@@ -124,7 +124,7 @@ initial_value <- c(1-1e-5, 1e-5 , 0, 0 )
 n <- length(DATA)
 
 
-#################### Ramdonly split to test and training (Algorithms 1)
+#################### Randomly split to test and training (Algorithms 1)
 lamda = 0
 c <- 1
 mea_vector_SIWRsir <- c()
@@ -759,7 +759,7 @@ while (c < 500) {
 
 
 
-######################  plots
+###################### parameters plots
 data1 <- data.frame(
   beta1 = PARAMETERS_SIWRsir[,1],
   beta2 = PARAMETERS_SIWRsir[,2],
@@ -811,11 +811,6 @@ ggplot(df_melted, aes(x = as.numeric(category), y = value, group = category)) +
 
 
 
-
-
-#setwd("/Users/jialetan/Desktop/UM-class/Research paper/ML_Marisa/Final_Submission/Final_Results")
-#load("PARAMETERS_5_SIWRsir.RData")
-#load("PARAMETERS_SIWRsir.RData")
 
 ### plot model fitting 
 Data_Generate <- function(par, initial, times){
